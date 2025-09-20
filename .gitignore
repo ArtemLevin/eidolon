@@ -1,0 +1,85 @@
+# ---------------------------
+# OS / IDE
+# ---------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ---------------------------
+# Python / Build
+# ---------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.egg-info/
+.eggs/
+build/
+dist/
+pip-wheel-metadata/
+
+# Виртуальные окружения
+.venv/
+venv/
+env/
+
+# Кэш пакетов/инструментов
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# ---------------------------
+# Env / Secrets
+# ---------------------------
+.env
+.env.*
+!.env.example
+!.env.template
+
+# ---------------------------
+# App runtime artifacts
+# ---------------------------
+# Рабочие каталоги и артефакты джоб
+_jobs/
+media/
+videos/
+logs/
+*.log
+
+# Manim/FFmpeg промежуточные артефакты и вывод
+.manim/
+media/
+**/media/
+**/videos/
+*.mp4
+*.webm
+*.mov
+*.wav
+*.mp3
+
+# Субтитры, если генерятся автоматически
+*.srt
+
+# ---------------------------
+# Node/Web (на будущее, если появится сборка)
+# ---------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log
+
+# ---------------------------
+# Coverage / Reports
+# ---------------------------
+.coverage
+coverage.xml
+htmlcov/
+
+# ---------------------------
+# Docker
+# ---------------------------
+# Игнорируем локальные файлы/папки, не нужные в образе
+docker-compose.override.yml
