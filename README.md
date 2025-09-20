@@ -47,21 +47,25 @@ curl -o subtitles.srt "http://localhost:8000/api/download/<ID>?kind=srt"
 
 ```mermaid
 flowchart LR
-    A[Upload: image/pdf/pptx/text] --> B[Ingest<br/>PDF/PPTX/Text Extract]
+    A[Upload: image/pdf/pptx/text] --> B["Ingest<br/>PDF/PPTX/Text Extract"]
     B --> C{source_type}
-    C -->|image| V[Vision (OpenAI: описание/объекты/текст)]
-    C -->|pdf/pptx| M[1-я страница/слайд → Vision<br/>+ объединение с извлечённым текстом]
-    C -->|text| T[Формирование ExtractedContent<br/>из текста напрямую]
-    V --> S[ScriptWriter (LLM): beats+narration]
+    C -->|image| V["Vision (OpenAI: описание/объекты/текст)"]
+    C -->|pdf/pptx| M["1-я страница/слайд → Vision<br/>+ объединение с извлечённым текстом"]
+    C -->|text| T["ExtractedContent из текста напрямую"]
+
+    V --> S["ScriptWriter (LLM): beats + narration"]
     M --> S
     T --> S
-    S --> MN[Manim: генерация кода и рендер]
-    S --> ST[SRT: генерация субтитров]
-    S --> TT[ElevenLabs TTS: WAV/MP3]
-    MN --> MX[Mux (ffmpeg): склейка A/V]
+
+    S --> MN["Manim: генерация кода и рендер"]
+    S --> ST["SRT: генерация субтитров"]
+    S --> TT["ElevenLabs TTS: WAV/MP3"]
+
+    MN --> MX["Mux (ffmpeg): склейка A/V"]
     TT --> MX
-    ST -.-> OUT[(Final MP4 + SRT)]
+    ST -.-> OUT["Final MP4 + SRT"]
     MX --> OUT
+
 ```
 
 ---
