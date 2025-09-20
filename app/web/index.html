@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Explainer MVP</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    .box { border: 2px dashed #aaa; padding: 1rem; border-radius: 8px; }
+    .row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    label { display:block; font-size: .9rem; margin-top: .5rem; }
+  </style>
+</head>
+<body>
+  <h1>Explainer MVP</h1>
+  <div class="box">
+    <form id="form">
+      <div class="row">
+        <div>
+          <label>Источник (source_type)</label>
+          <select name="source_type" id="source_type">
+            <option value="image">image</option>
+            <option value="pdf">pdf</option>
+            <option value="pptx">pptx</option>
+            <option value="text">text</option>
+          </select>
+        </div>
+        <div>
+          <label>Длительность</label>
+          <select name="video_duration_sec">
+            <option>15</option><option>30</option><option selected>60</option><option>90</option>
+          </select>
+        </div>
+        <div>
+          <label>Аудитория</label>
+          <select name="audience_preset">
+            <option>школьники</option><option selected>начинающие</option><option>продвинутые</option><option>руководители</option>
+          </select>
+        </div>
+        <div>
+          <label>Стиль</label>
+          <select name="style">
+            <option>default</option><option>whiteboard</option><option>slides</option>
+          </select>
+        </div>
+      </div>
+      <label>Файл (image/pdf/pptx)</label>
+      <input type="file" name="image" />
+      <label>Текст (если source_type = text)</label>
+      <textarea name="text" rows="4" cols="60"></textarea>
+      <div class="row">
+        <button type="submit">Создать видео</button>
+      </div>
+    </form>
+  </div>
+  <pre id="out"></pre>
+<script>
+const form = document.getElementById('form');
+const out = document.getElementById('out');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(form);
+  const r = await fetch('/api/upload', { method: 'POST', body: fd });
+  const j = await r.json();
+  out.textContent = 'job_id: ' + (j.job_id || JSON.stringify(j, null, 2));
+  if (j.job_id) {
+    const st = await fetch('/api/status/' + j.job_id);
+    const js = await st.json();
+    out.textContent += '\nstatus: ' + JSON.stringify(js, null, 2) + '\n\n' +
+      'Скачать видео: ' + window.location.origin + '/api/download/' + j.job_id + '\n' +
+      'Скачать SRT:   ' + window.location.origin + '/api/download/' + j.job_id + '?kind=srt';
+  }
+});
+</script>
+</body>
+</html>
